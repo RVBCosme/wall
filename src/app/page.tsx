@@ -48,7 +48,7 @@ export default function Home() {
       </main>
 
       <footer className="mx-auto max-w-[980px] px-4 pb-6 text-[11px] text-[#999]">
-        Built by Rene Vincent Cosme with Next.js, React, Tailwind CSS and Supabase ·{" "}
+        Built by Rene Vincent Cosme with Next.js, React, Tailwind CSS, shadcn/ui and Supabase ·{" "}
         <a className="text-[#3b5998] hover:underline" href="https://github.com/RVBCosme/wall">
           Source
         </a>

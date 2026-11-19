@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PHOTO_BUCKET, supabase } from "@/lib/supabase";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   FEED_LIMIT,
   MAX_MESSAGE,
@@ -128,27 +131,26 @@ export default function Wall() {
         <label htmlFor="message" className="mb-1 block text-[13px] font-bold text-[#333]">
           Write something…
         </label>
-        <textarea
+        <Textarea
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           maxLength={MAX_MESSAGE + 20}
-          rows={3}
           placeholder="What's on your mind?"
-          className="w-full resize-y rounded-sm border border-[#bdc7d8] p-2 text-[13px] text-[#333] outline-none focus:border-[#3b5998]"
+          className="min-h-20 resize-y bg-white"
         />
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <label htmlFor="name" className="sr-only">
             Your name
           </label>
-          <input
+          <Input
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={MAX_NAME}
             placeholder="Your name"
             autoComplete="name"
-            className="w-44 rounded-sm border border-[#bdc7d8] px-2 py-1 text-[13px] outline-none focus:border-[#3b5998]"
+            className="w-44 bg-white"
           />
           <input
             ref={fileInput}
@@ -160,7 +162,7 @@ export default function Wall() {
           />
           <label
             htmlFor="photo"
-            className="cursor-pointer rounded-sm border border-[#bdc7d8] bg-[#f7f7f7] px-2 py-1 text-[12px] text-[#3b5998] hover:bg-[#eceff5]"
+            className={buttonVariants({ variant: "outline", size: "sm", className: "cursor-pointer text-[#3b5998]" })}
           >
             📷 {photo ? "Change photo" : "Add photo"}
           </label>
@@ -178,13 +180,9 @@ export default function Wall() {
           >
             {remaining}
           </span>
-          <button
-            type="submit"
-            disabled={!canShare}
-            className="rounded-sm border border-[#29447e] bg-[#5b74a8] px-4 py-1 text-[13px] font-bold text-white hover:bg-[#4e69a2] disabled:cursor-not-allowed disabled:opacity-50"
-          >
+          <Button type="submit" disabled={!canShare} className="border-[#29447e] px-4 font-bold">
             {sharing ? "Sharing…" : "Share"}
-          </button>
+          </Button>
         </div>
         {formError && (
           <p role="alert" className="mt-2 text-[12px] text-red-600">
@@ -210,7 +208,7 @@ export default function Wall() {
       ) : (
         <ul className="flex flex-col" aria-label="Wall posts">
           {posts.map((p) => (
-            <li key={p.id} className="flex gap-3 border-b border-[#e9e9e9] py-3">
+            <li key={p.id} className="flex gap-3 border-b border-[#e9e9e9] py-3 animate-in fade-in slide-in-from-top-2 duration-300">
               <div
                 className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-[#d8dfea] text-[15px] font-bold text-[#3b5998]"
                 aria-hidden="true"

@@ -1,6 +1,6 @@
 # Wall
 
-A 2008-style wall: type a message, press **Share**, and it appears at the top of a live feed. Built with Next.js, React, Tailwind CSS and Supabase.
+A 2008-style wall: type a message, press **Share**, and it appears at the top of a live feed. Built with Next.js, React, Tailwind CSS, shadcn/ui and Supabase.
 
 **Live app:** https://rene-cosme-wall.vercel.app
 
@@ -14,7 +14,7 @@ A 2008-style wall: type a message, press **Share**, and it appears at the top of
 
 ## How the data is protected
 
-The browser only has the Supabase publishable key, so the database enforces the rules itself (`supabase/schema.sql`):
+The browser only has the Supabase public key (`NEXT_PUBLIC_SUPABASE_ANON_KEY`, holding the project's publishable key), so the database enforces the rules itself (`supabase/schema.sql`):
 
 - Row Level Security: anyone can read and add posts; nobody can edit or delete them.
 - Check constraints: names 1-40 characters, messages 1-280 characters, and photo links must point to this project's `wall-photos` bucket.
@@ -24,7 +24,7 @@ The browser only has the Supabase publishable key, so the database enforces the 
 ## Stack
 
 - Next.js 16 (App Router) and React 19, TypeScript
-- Tailwind CSS 4
+- Tailwind CSS 4 and shadcn/ui (Button, Input, Textarea), themed in the 2008 Facebook colours
 - Supabase: Postgres, Realtime, Storage (`@supabase/supabase-js`)
 - Vitest for the post rules (validation, feed ordering, time labels)
 - Deployed on Vercel
@@ -32,7 +32,7 @@ The browser only has the Supabase publishable key, so the database enforces the 
 ## Run it locally
 
 1. Create a Supabase project and run `supabase/schema.sql` in its SQL editor (change the project URL in the `image_url` check to yours).
-2. Copy `.env.example` to `.env.local` and fill in your project URL and publishable key.
+2. Copy `.env.example` to `.env.local` and fill in `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (your project URL and its publishable or anon key).
 3. Then:
 
 ```bash
