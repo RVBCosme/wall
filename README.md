@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wall
 
-## Getting Started
+A 2008-style wall: type a message, press **Share**, and it appears at the top of a live feed. Built with Next.js, React, Tailwind CSS and Supabase.
 
-First, run the development server:
+**Live app:** LIVE_URL
+
+## What it does
+
+- Visitors write a message (up to 280 characters, with a live counter), add their name, and press **Share**. No sign-in needed.
+- Every post is saved in a Supabase `posts` table (id, author name, message, timestamp, plus an optional photo).
+- The feed shows the newest 50 posts, newest first, and they stay after a page refresh.
+- **Live feed:** new posts appear in every open page without a refresh (Supabase Realtime).
+- **Photo upload:** attach a JPG, PNG, GIF or WebP (up to 5 MB); it goes to Supabase Storage and shows in the post.
+
+## How the data is protected
+
+The browser only has the Supabase publishable key, so the database enforces the rules itself (`supabase/schema.sql`):
+
+- Row Level Security: anyone can read and add posts; nobody can edit or delete them.
+- Check constraints: names 1-40 characters, messages 1-280 characters, and photo links must point to this project's `wall-photos` bucket.
+- A trigger sets each post's id and time on the server, so a post cannot be backdated or pinned.
+- The `wall-photos` bucket accepts images only, up to 5 MB.
+
+## Stack
+
+- Next.js 16 (App Router) and React 19, TypeScript
+- Tailwind CSS 4
+- Supabase: Postgres, Realtime, Storage (`@supabase/supabase-js`)
+- Vitest for the post rules (validation, feed ordering, time labels)
+- Deployed on Vercel
+
+## Run it locally
+
+1. Create a Supabase project and run `supabase/schema.sql` in its SQL editor (change the project URL in the `image_url` check to yours).
+2. Copy `.env.example` to `.env.local` and fill in your project URL and publishable key.
+3. Then:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm test         # unit tests
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Built with AI
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Built with the help of an AI coding assistant (Claude Code). I checked it by posting on the running app, refreshing to confirm posts persist, watching a second tab update live, and probing the database with the public key (over-long posts, outside image links, edits and deletes are all refused).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+By Rene Vincent Cosme · [Portfolio](https://renevincentcosme.vercel.app) · [GitHub](https://github.com/RVBCosme)

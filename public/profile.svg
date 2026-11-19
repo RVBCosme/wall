@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Profile photo placeholder">
+  <rect width="200" height="200" fill="#d8dfea"/>
+  <circle cx="100" cy="78" r="38" fill="#a9b6d0"/>
+  <path d="M30 190c4-42 34-64 70-64s66 22 70 64z" fill="#a9b6d0"/>
+  <text x="100" y="186" text-anchor="middle" font-family="Tahoma, Verdana, sans-serif" font-size="14" font-weight="bold" fill="#3b5998">RVC</text>
+</svg>
