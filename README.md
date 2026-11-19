@@ -2,7 +2,7 @@
 
 A 2008-style wall: type a message, press **Share**, and it appears at the top of a live feed. Built with Next.js, React, Tailwind CSS and Supabase.
 
-**Live app:** LIVE_URL
+**Live app:** https://rene-cosme-wall.vercel.app
 
 ## What it does
 

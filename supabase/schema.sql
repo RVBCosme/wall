@@ -3,8 +3,9 @@
 -- 1. Posts table: id, author name, message text, optional photo, timestamp.
 create table if not exists public.posts (
   id uuid primary key default gen_random_uuid(),
-  author_name text not null check (char_length(btrim(author_name)) between 1 and 40),
-  message text not null check (char_length(btrim(message)) between 1 and 280),
+  -- The trigger below trims whitespace first, so these limits apply to what is stored.
+  author_name text not null check (char_length(author_name) between 1 and 40),
+  message text not null check (char_length(message) between 1 and 280),
   image_url text check (
     image_url is null
     or image_url like 'https://tndraxfhsyhakcfqgwnw.supabase.co/storage/v1/object/public/wall-photos/%'
@@ -14,7 +15,8 @@ create table if not exists public.posts (
 
 create index if not exists posts_created_at_idx on public.posts (created_at desc);
 
--- The server sets the id and time, so a visitor cannot backdate or pin a post.
+-- The server sets the id and time (so a visitor cannot backdate or pin a post) and
+-- trims surrounding whitespace before the length checks run.
 create or replace function public.posts_set_defaults()
 returns trigger
 language plpgsql
@@ -23,6 +25,8 @@ as $$
 begin
   new.id := gen_random_uuid();
   new.created_at := now();
+  new.author_name := btrim(new.author_name, E' \t\r\n');
+  new.message := btrim(new.message, E' \t\r\n');
   return new;
 end;
 $$;
